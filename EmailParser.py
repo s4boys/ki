@@ -14,7 +14,7 @@ class EmailParser:
                 if word in self.all_words:
                     self.all_words[word] += 1
                 else:
-                    self.all_words[word] = 0
+                    self.all_words[word] = 1
 
     # changes order of dict, attention!
     def filter_attributes_by_occurrence(self,relevant_amount):
@@ -25,8 +25,10 @@ class EmailParser:
     def get_data(self,email):
         data_line = ""
         for word in email.word_occurrences:
-            if (word in self.all_words):
+            if word in self.all_words:
                 self.all_words[word] = email.word_occurrences[word]
+
+            
             #else:
                 #print("Could not find " + word + " in all words")
         for word in self.all_words:
@@ -34,7 +36,7 @@ class EmailParser:
             self.all_words[word] = 0
 
         for c in Keywords.CHARACTERS:
-            data_line += str(email.char_occurences[c]) + ","
+            data_line += str(email.char_occurrences[c]) + ","
 
         data_line += str(email.email_length) + ","
 
@@ -65,10 +67,10 @@ class EmailParser:
         file.write(Keywords.SPAMBASE + Keywords.LINE_FEED)
         return file
 
-    def set_occurences_to_false(self,relative_occurences):
-        for key in relative_occurences:
-            relative_occurences[key] = False
-        return relative_occurences
+    def set_occurrences_to_false(self,relative_occurrences):
+        for key in relative_occurrences:
+            relative_occurrences[key] = False
+        return relative_occurrences
 
     def parse_emails(self,csv_file):
         self.emails = list()

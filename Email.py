@@ -8,7 +8,7 @@ class Email:
         splitted_line = line.split(Keywords.DELIMITER_SC)
         self.email_length = 0
         self.word_occurrences = dict()
-        self.char_occurences = dict()
+        self.char_occurrences = dict()
         self.fill_occurrences(splitted_line[1:-1])
         self.ham = splitted_line[-1]
         #self.case_relation = 0.0
@@ -63,5 +63,5 @@ class Email:
 
     def count_special_characters(self,content):
         for c in Keywords.CHARACTERS:
-            self.char_occurences[c] = content.count(c)
+            self.char_occurrences[c] = content.count(c)
 
