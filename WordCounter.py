@@ -8,9 +8,9 @@ def read_email(path):
 
 def main():
     output_path = "spam.arff"
-    input = read_email("short_enron4.csv")
+    enron_mail = read_email("short_enron4.csv")
     parser = EmailParser.EmailParser()
-    parser.parse_emails(input)
+    parser.parse_emails(enron_mail)
     #parser.filter_attributes_by_occurrence(5)
     parser.write_arff_file(output_path)
 
