@@ -2,6 +2,31 @@ import Keywords
 import re
 
 
+
+class AttributeSet:
+    def __init__(self, email, word_counts):
+        
+        self.word_frequency = dict()
+        for word in word_counts:
+            self.word_frequency[word] = email.word_occurrences.get(word, 0)
+
+        self.char_frequency = dict()
+        for c in Keywords.CHARACTERS:
+            self.char_frequency[c] = email.char_occurrences.get(c, 0)
+
+        self.email_length = email.email_length 
+
+    def as_list(self):
+        """"Returns the attribute set as a python list"""
+        result = list()
+        for _, freq in self.word_frequency:
+            list.append(freq)
+        for _, freq in self.char_frequency:
+            list.append(freq)
+        list.append(self.email_length)
+        return result
+
+
 class Email:
 
     def __init__(self,line):
@@ -12,7 +37,6 @@ class Email:
         self.fill_occurrences(splitted_line[1:-1])
         self.ham = splitted_line[-1]
         #self.case_relation = 0.0
-
 
     # removes quotation marks and reduces series of spaces to a single space
     def clean_content(self,content):
