@@ -20,8 +20,6 @@ def main():
     mails, wordcount = nep.parse_emails(enron_mail)
     nep.write_arff_file(mails, wordcount, output_path)
 
-    
-
 
 if __name__ == "__main__":
     main()

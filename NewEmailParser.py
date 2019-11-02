@@ -18,7 +18,6 @@ def write_arff_file(list_emails, word_counts, output_path):
     """Calculate the attribute values, generate a string representation and write as arff"""
     with open(output_path, "w+") as file:
         file.write(Keywords.SPAMBASE + Keywords.LINE_FEED)
-         # TODO: implement attribute_headers function
         file.write(__attribute_headers(word_counts))
         file.write(Keywords.ATTRIBUTE_CLASS + Keywords.LINE_FEED)
         file.write(Keywords.DATA + Keywords.LINE_FEED)
