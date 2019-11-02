@@ -4,6 +4,7 @@
 
 import Email
 import Keywords
+import bufferParser
 
 def parse_emails(csv_file_handle):
     """Parse passed csv into Email objects and a word count dict"""
@@ -18,6 +19,7 @@ def write_arff_file(list_emails, word_counts, output_path):
     """Calculate the attribute values, generate a string representation and write as arff"""
     with open(output_path, "w+") as file:
         file.write(Keywords.SPAMBASE + Keywords.LINE_FEED)
+         # TODO: implement attribute_headers function
         file.write(__attribute_headers(word_counts))
         file.write(Keywords.ATTRIBUTE_CLASS + Keywords.LINE_FEED)
         file.write(Keywords.DATA + Keywords.LINE_FEED)
@@ -40,17 +42,17 @@ def __count_words(list_emails):
 def __attribute_headers(word_counts):
     """Returns a string representation for all attribute headers"""
     result = ""
-    qm = r''' "''' # quotation marks
+    qm = r'''"''' # quotation marks
 
     line_template = "" + Keywords.ATTRIBUTE + qm + Keywords.WORD_FREQ + r"{}" + qm + Keywords.INT + Keywords.LINE_FEED
     for word in word_counts:
-        if word == "\\":
-            result += line_template.format(r"\\")
-        else:
-            result += line_template.format(word)
-
+        if len(word) > 1:
+            if word == "\\":
+                result += line_template.format(r"\\")
+            else:
+                result += line_template.format(word)
     for c in Keywords.CHARACTERS:
-        result += Keywords.ATTRIBUTE + " \"" + Keywords.CHAR_FREQ + c + "\"" + Keywords.INT + Keywords.LINE_FEED
+        result += Keywords.ATTRIBUTE + "\"" + Keywords.CHAR_FREQ + c + "\"" + Keywords.INT + Keywords.LINE_FEED
 
     result += Keywords.ATTRIBUTE + Keywords.EMAIL_LENGTH + Keywords.INT + Keywords.LINE_FEED
     
@@ -62,10 +64,11 @@ def __stringify_email(email, word_counts):
     
     # each attribute needs to be written, write 0 if word doesn't appear
     for word in word_counts:
-        if word in email.word_occurrences:
-            string += str(email.word_occurrences[word]) + ","
-        else:
-            string += "0,"
+        if len(word) > 1:
+            if word in email.word_occurrences:
+                string += str(email.word_occurrences[word]) + ","
+            else:
+                string += "0,"
     
     for c in Keywords.CHARACTERS:
         string += str(email.char_occurrences[c]) + ","
